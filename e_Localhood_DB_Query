@@ -1,0 +1,31 @@
+create table Role(ID bigint auto_increment primary key,Role varchar(25) not null,Time timestamp default current_timestamp);
+
+create table User(ID bigint auto_increment primary key,RoleID bigint not null,EmailID varchar(100)not null,PhoneNo bigint not null,Password varchar(25)not null,OTP bigint not null,FirstName varchar(50),LastName varchar(50),Time timestamp default current_timestamp,foreign key(RoleID) references Role(ID));
+
+create table Address(ID bigint auto_increment primary key,UserID bigint not null,City varchar(50) not null,State varchar(50) not null,Locality varchar(50) not null,Location varchar(100) not null,HouseName varchar(100) not null,Pincode bigint not null,Time timestamp default current_timestamp,foreign key(UserID) references User(ID));
+
+create table BusinessOwner(ID bigint auto_increment primary key,UserID bigint not null,AadharCardNo bigint not null,AadharFrontImage blob not null,AadharBackImage blob,PassportPhotoImage blob not null,AccountHolderName varchar(100) not null,BankACNo bigint not null,IFSCCode varchar(11) not null,UPIID varchar(25) not null,QRCodeImage blob not null,Time timestamp default current_timestamp,foreign key(UserID) references User(ID));
+
+create table BusinessInformation(ID bigint auto_increment primary key,BusinessOwnerID bigint not null,ShopName varchar(50),ShopCategory varchar(50),WhatsAppNo bigint not null,DeliveryDetails varchar(50) not null,ShopPhoto blob,PhotoInsideShop blob,Time timestamp default current_timestamp,foreign key(BusinessOwnerID) references BusinessOwner(ID));
+
+create table ShopAddress(ID bigint auto_increment primary key,BusinessInformationID bigint not null,City varchar(50) not null,State varchar(50) not null,Locality varchar(50) not null,Location varchar(100),Pincode bigint not null,Time timestamp default current_timestamp,foreign key(BusinessInformationID) references BusinessInformation(ID));
+
+create table Product(ID bigint auto_increment primary key,BusinessInformationID bigint not null,Name varchar(50) not null,Price bigint not null,Category varchar(50) not null,Time timestamp default current_timestamp,foreign key(BusinessInformationID) references BusinessInformation(ID));
+
+create table ProductSize(ID bigint auto_increment primary key,ProductID bigint not null,Size varchar(500) not null,Time timestamp default current_timestamp,foreign key(ProductID) references Product(ID));
+
+  create table ProductColor(ID bigint auto_increment primary key,ProductID bigint not null,Color varchar(50) not null,Time timestamp default current_timestamp,foreign key(ProductID) references Product(ID));
+
+create table ProductPhoto(ID bigint auto_increment primary key,ProductID bigint not null,Photo blob not null,Time timestamp default current_timestamp,foreign key(ProductID) references Product(ID));
+
+create table Cart(ID bigint auto_increment primary key,UserID bigint not null,ProductID bigint not null,Quantity bigint not null,Time timestamp default current_timestamp,foreign key(UserID) references User(ID),foreign key(ProductID) references Product(ID));
+
+
+ create table Payment(ID bigint auto_increment primary key,UserID bigint not null,Type varchar(50) not null,Time timestamp default current_timestamp,foreign key(UserID) references User(ID));
+
+create table Order_1(ID bigint auto_increment primary key,UserID bigint not null,Quantity bigint not null,NetAmount bigint not null,Time timestamp default current_timestamp,foreign key(UserID) references User(ID));
+
+create table OrderDescription(ID bigint auto_increment primary key,Order_1ID bigint not null,UserID bigint not null,ProductID bigint not null,Price bigint not null,Time timestamp default current_timestamp,foreign key(Order_1ID) references Order_1(ID),foreign key(UserID) references User(ID),foreign key(ProductID) references Product(ID));
+
+
+
